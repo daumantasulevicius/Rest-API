@@ -14,8 +14,8 @@ class DataController extends Controller
      */
     public function index()
     {
-        $returnData = Data::all()->toJson(JSON_PRETTY_PRINT);
-        return response($returnData);
+        $returnData = Data::paginate(25)->toJson(JSON_PRETTY_PRINT);
+        return response($returnData, 200);
     }
 
     /**
