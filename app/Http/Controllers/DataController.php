@@ -92,6 +92,12 @@ class DataController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $found = Data::find($id);
+        if ($found === null)
+            return response("Element not found", 404);
+        else {
+            $found->delete();
+            return response("Element deleted successfully", 200);
+        }
     }
 }
