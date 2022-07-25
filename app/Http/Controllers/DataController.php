@@ -47,7 +47,7 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(Data::find($id)->toJson(JSON_PRETTY_PRINT));
     }
 
     /**
