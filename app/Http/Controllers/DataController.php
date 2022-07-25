@@ -15,7 +15,8 @@ class DataController extends Controller
      */
     public function index()
     {
-        //
+        $returnData = Data::paginate(25)->toJson(JSON_PRETTY_PRINT);
+        return response($returnData, 200);
     }
 
     /**
@@ -57,7 +58,7 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(Data::find($id)->toJson(JSON_PRETTY_PRINT));
     }
 
     /**
