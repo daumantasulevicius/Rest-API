@@ -20,6 +20,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/create', [DataController::class, 'store']);
 Route::get('find/{id}', [DataController::class, 'show']);
 Route::get('/get', [DataController::class, 'index']);
 Route::get('/getFeed',[ MakeFeedRequestController::class,'getFeed']);

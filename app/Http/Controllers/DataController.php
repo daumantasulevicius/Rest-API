@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PostRequest;
 use App\Models\Data;
 use Illuminate\Http\Request;
 
@@ -31,18 +32,28 @@ class DataController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Requests\PostRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $data = new Data;
+        $data->index_start_at = $request->index_start_at;
+        $data->integer = $request->integer;
+        $data->float = $request->float;
+        $data->name = $request->name;
+        $data->surname = $request->surname;
+        $data->fullname = $request->fullname;
+        $data->email = $request->email;
+        $data->bool = $request->bool;
+        $data->save();
+        return response()->json("New item added", 201);
     }
 
     /**
      * Display the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -53,7 +64,7 @@ class DataController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -64,8 +75,8 @@ class DataController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
+     * @param \Illuminate\Http\Request $request
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function update(Request $request, $id)
@@ -76,7 +87,7 @@ class DataController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
