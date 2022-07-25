@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Requests\PutRequest;
 use App\Http\Requests\PostRequest;
 use App\Models\Data;
 use Illuminate\Http\Request;
@@ -53,7 +54,7 @@ class DataController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
@@ -64,7 +65,7 @@ class DataController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param int $id
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
@@ -75,13 +76,14 @@ class DataController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param \Illuminate\Http\Request $request
-     * @param int $id
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(PutRequest $request, $id)
     {
-        //
+        Data::find($id)->update($request->all());
+        return response()->json("Item updated", 200);
     }
 
     /**

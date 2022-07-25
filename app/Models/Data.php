@@ -18,6 +18,7 @@ class Data extends Model
         'surname',
         'fullname',
         'email',
-        'bool'
+        'bool',
+        'comment'
     ];
 }
