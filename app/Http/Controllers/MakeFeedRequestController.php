@@ -10,6 +10,6 @@ class MakeFeedRequestController extends Controller
     public function getFeed()
     {
         MakeFeedRequest::dispatch();
-        return response()->json(['message' => 'post has been sent']);
+        return response()->json(['message' => 'Feed has been read']);
     }
 }
