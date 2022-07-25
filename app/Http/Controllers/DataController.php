@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\PutRequest;
+use App\Http\Requests\PostRequest;
 use App\Models\Data;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,8 @@ class DataController extends Controller
      */
     public function index()
     {
-        //
+        $returnData = Data::paginate(25)->toJson(JSON_PRETTY_PRINT);
+        return response($returnData, 200);
     }
 
     /**
@@ -31,12 +33,22 @@ class DataController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \Illuminate\Http\Request  $request
+     * @param \App\Http\Requests\PostRequest $request
      * @return \Illuminate\Http\Response
      */
-    public function store(Request $request)
+    public function store(PostRequest $request)
     {
-        //
+        $data = new Data;
+        $data->index_start_at = $request->index_start_at;
+        $data->integer = $request->integer;
+        $data->float = $request->float;
+        $data->name = $request->name;
+        $data->surname = $request->surname;
+        $data->fullname = $request->fullname;
+        $data->email = $request->email;
+        $data->bool = $request->bool;
+        $data->save();
+        return response()->json("New item added", 201);
     }
 
     /**
@@ -47,7 +59,7 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        //
+        return response(Data::find($id)->toJson(JSON_PRETTY_PRINT));
     }
 
     /**
@@ -77,11 +89,17 @@ class DataController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        //
+        $found = Data::find($id);
+        if ($found === null)
+            return response("Element not found", 404);
+        else {
+            $found->delete();
+            return response("Element deleted successfully", 200);
+        }
     }
 }

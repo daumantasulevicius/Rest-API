@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DataController;
+use App\Http\Controllers\MakeFeedRequestController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -20,3 +21,8 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 });
 
 Route::put('update/{id}', [DataController::class, 'update']);
+Route::delete('/delete/{id}', [DataController::class, 'destroy']);
+Route::post('/create', [DataController::class, 'store']);
+Route::get('find/{id}', [DataController::class, 'show']);
+Route::get('/get', [DataController::class, 'index']);
+Route::get('/getFeed',[ MakeFeedRequestController::class,'getFeed']);
