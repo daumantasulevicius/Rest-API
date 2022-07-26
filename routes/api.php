@@ -25,4 +25,6 @@ Route::delete('/delete/{id}', [DataController::class, 'destroy']);
 Route::post('/create', [DataController::class, 'store']);
 Route::get('find/{id}', [DataController::class, 'show']);
 Route::get('/get', [DataController::class, 'index']);
-Route::get('/getFeed',[ MakeFeedRequestController::class,'getFeed']);
+Route::get('/getFeed',[MakeFeedRequestController::class,'getFeed']);
+Route::get('/filter', [DataController::class, 'filter']);
+Route::get('/search/{phrase}', [DataController::class, 'search']);

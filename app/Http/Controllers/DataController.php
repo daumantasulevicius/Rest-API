@@ -16,8 +16,8 @@ class DataController extends Controller
      */
     public function index()
     {
-        $returnData = Data::paginate(25)->toJson(JSON_PRETTY_PRINT);
-        return response($returnData, 200);
+        $returnData = Data::paginate(25);
+        return response()->json($returnData, 200);
     }
 
     /**
@@ -48,7 +48,7 @@ class DataController extends Controller
         $data->email = $request->email;
         $data->bool = $request->bool;
         $data->save();
-        return response()->json("New item added", 201);
+        return response()->json(['message' => "New item added"], 201);
     }
 
     /**
@@ -59,7 +59,7 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        return response(Data::find($id)->toJson(JSON_PRETTY_PRINT));
+        return response()->json(Data::find($id), 200);
     }
 
     /**
@@ -96,10 +96,35 @@ class DataController extends Controller
     {
         $found = Data::find($id);
         if ($found === null)
-            return response("Element not found", 404);
+            return response()->json(['message' => "Element not found"], 404);
         else {
             $found->delete();
-            return response("Element deleted successfully", 200);
+            return response()->json(['message' => "Element deleted successfully"], 200);
         }
+    }
+    public function filter(Request $request)
+    {
+        $operator_arr = array("gt"=>">", "ge"=>">=", "lt"=>"<", "le"=>"<=", "eq"=>"=", "ne"=>"!=");
+        $query = Data::select('*');
+        foreach ($request->query() as $key => $value) {
+            if(is_array($value))
+                foreach ($value as $array_key => $array_value){
+                    $query->where($key, $operator_arr[$array_key], $array_value);
+                }
+            else
+                $query->where($key, '=', $value);
+        }
+        return response()->json($query->get(), 200);
+    }
+    public function search($phrase)
+    {
+        $searchFields = ['index_start_at','integer','float','name','surname','fullname','email','bool','comment'];
+        $returnData = Data::select('*')->where(function ($query) use ($phrase, $searchFields) {
+            $searchWildcard = '%' . $phrase . '%';
+            foreach ($searchFields as $field) {
+                $query->orWhere($field, 'LIKE', $searchWildcard);
+            }
+        })->get();
+        return response()->json($returnData, 200);
     }
 }
