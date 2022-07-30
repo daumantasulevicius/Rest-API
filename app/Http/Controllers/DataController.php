@@ -59,7 +59,12 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Data::with('comments')->find($id), 200);
+        $data = Data::with('comments')->find($id);
+        if ($data !== null) {
+            return response()->json($data, 200);
+        }
+        else
+            return response()->json(['error' => "Item not found"], 404);
     }
 
     /**
@@ -82,8 +87,13 @@ class DataController extends Controller
      */
     public function update(PutRequest $request, $id)
     {
-        Data::find($id)->update($request->all());
-        return response()->json("Item updated", 200);
+        $data = Data::find($id);
+        if ($data !== null) {
+            $data->update($request->all());
+            return response()->json(['success' => "Item updated"], 200);
+        }
+        else
+            return response()->json(['error' => "Item not found"], 404);
     }
 
     /**
