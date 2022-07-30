@@ -18,7 +18,11 @@ class Data extends Model
         'surname',
         'fullname',
         'email',
-        'bool',
-        'comment'
+        'bool'
     ];
+
+    public function comments()
+    {
+        return $this->hasMany(Comment::class);
+    }
 }
