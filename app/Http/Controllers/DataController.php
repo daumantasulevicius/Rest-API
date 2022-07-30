@@ -102,4 +102,29 @@ class DataController extends Controller
             return response()->json(['message' => "Element deleted successfully"], 200);
         }
     }
+    public function filter(Request $request)
+    {
+        $operator_arr = array("gt"=>">", "ge"=>">=", "lt"=>"<", "le"=>"<=", "eq"=>"=", "ne"=>"!=");
+        $query = Data::select('*');
+        foreach ($request->query() as $key => $value) {
+            if(is_array($value))
+                foreach ($value as $array_key => $array_value){
+                    $query->where($key, $operator_arr[$array_key], $array_value);
+                }
+            else
+                $query->where($key, '=', $value);
+        }
+        return response()->json($query->get(), 200);
+    }
+    public function search($phrase)
+    {
+        $searchFields = ['index_start_at','integer','float','name','surname','fullname','email','bool','comment'];
+        $returnData = Data::select('*')->where(function ($query) use ($phrase, $searchFields) {
+            $searchWildcard = '%' . $phrase . '%';
+            foreach ($searchFields as $field) {
+                $query->orWhere($field, 'LIKE', $searchWildcard);
+            }
+        })->get();
+        return response()->json($returnData, 200);
+    }
 }
