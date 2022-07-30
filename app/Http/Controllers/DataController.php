@@ -16,7 +16,7 @@ class DataController extends Controller
      */
     public function index()
     {
-        $returnData = Data::paginate(25);
+        $returnData = Data::with('comments')->paginate(25);
         return response()->json($returnData, 200);
     }
 
@@ -59,7 +59,7 @@ class DataController extends Controller
      */
     public function show($id)
     {
-        return response()->json(Data::find($id), 200);
+        return response()->json(Data::with('comments')->find($id), 200);
     }
 
     /**

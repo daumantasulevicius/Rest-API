@@ -23,7 +23,6 @@ class CreateDataTable extends Migration
             $table->string('fullname');
             $table->string('email');
             $table->boolean('bool');
-            $table->string('comment')->nullable();
         });
     }
 
